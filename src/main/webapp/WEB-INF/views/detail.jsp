@@ -11,6 +11,8 @@
     <title>Title</title>
 </head>
 <body>
-${idcuasanpham}
+${idSP}
+${a}
+${b}
 </body>
 </html>

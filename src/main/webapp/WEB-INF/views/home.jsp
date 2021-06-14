@@ -11,6 +11,6 @@
     <title>Title</title>
 </head>
 <body>
-<h1>Danh sách lớp C0720I2</h1>
+<h1>Danh sách lớp </h1>
 </body>
 </html>

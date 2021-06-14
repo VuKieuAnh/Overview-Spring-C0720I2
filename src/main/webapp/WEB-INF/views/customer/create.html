@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+//menu
+<div th:replace="/layout::menu"></div>
+
+<span th:if="${mess}" th:text="${mess}"></span>
+<form method="post" >
+<!--    <input type="text" th:field="*{name}" placeholder="name"/>-->
+    <input type="text" name="name" placeholder="name"/>
+<!--    <input type="text" th:field="*{email}" placeholder="mail"/>-->
+<!--    <input type="text" th:field="*{address}" placeholder="address"/>-->
+    <button type="submit">Submit</button>
+</form>
+
+<div th:replace="/layout::footer"></div>
+</body>
+</html>
