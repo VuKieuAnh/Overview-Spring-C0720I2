@@ -5,6 +5,15 @@ public class Customer {
     private String name;
     private String email;
     private String address;
+    private String img;
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
+    }
 
     public Customer() {
     }

@@ -8,14 +8,29 @@
 //menu
 <div th:replace="/layout::menu"></div>
 
-<span th:if="${mess}" th:text="${mess}"></span>
-<form method="post" >
-<!--    <input type="text" th:field="*{name}" placeholder="name"/>-->
-    <input type="text" name="name" placeholder="name"/>
-<!--    <input type="text" th:field="*{email}" placeholder="mail"/>-->
-<!--    <input type="text" th:field="*{address}" placeholder="address"/>-->
-    <button type="submit">Submit</button>
-</form>
+<div id="form" >
+    <form th:object="${customer}" enctype="multipart/form-data"
+          method="POST" novalidate="novalidate">
+        <input type="hidden" th:field="*{id}"/>
+        <div>
+            <label>Name</label>
+            <input type="text" th:field="*{name}"/>
+        </div>
+        <div>
+            <label>Email</label>
+            <input type="email" th:field="*{email}"/>
+        </div>
+        <div>
+            <label>Address</label>
+            <input type="text" th:field="*{address}"/>
+        </div>
+        <div>
+            <label>Img</label>
+            <input type="file" th:field="*{img}"/>
+        </div>
+        <input type="submit" value="Save"/>
+    </form>
+</div>
 
 <div th:replace="/layout::footer"></div>
 </body>

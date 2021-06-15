@@ -61,7 +61,7 @@ public class HomeController {
     }
 
     @PostMapping("/create")
-    public ModelAndView create(@RequestParam String name, Long age){
+    public ModelAndView create(@RequestParam String name, Long age ){
         ModelAndView modelAndView = new ModelAndView("product/create");
         return  modelAndView;
     }
