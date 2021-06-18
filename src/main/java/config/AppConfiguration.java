@@ -1,5 +1,7 @@
 package config;
 
+import formater.CategoryFormatter;
+import model.Category;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -9,12 +11,17 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.format.FormatterRegistrar;
+import org.springframework.format.FormatterRegistry;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -25,9 +32,10 @@ import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.TemplateMode;
-import service.CustomerService;
 import service.CustomerServiceORM;
 import service.ICustomerService;
+import service.category.CategoryService;
+import service.category.ICategoryService;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -40,6 +48,8 @@ import java.util.Properties;
 @EnableWebMvc
 @ComponentScan("controller")
 @PropertySource("classpath:file_upload.properties")
+@EnableTransactionManagement
+@EnableJpaRepositories("repo")
 public class AppConfiguration extends WebMvcConfigurerAdapter implements ApplicationContextAware {
     private ApplicationContext applicationContext;
 
@@ -87,6 +97,18 @@ public class AppConfiguration extends WebMvcConfigurerAdapter implements Applica
         return new CustomerServiceORM();
     }
 
+    @Bean
+    public ICategoryService categoryService(){
+        return new CategoryService();
+    }
+
+    @Override
+    public void addFormatters(FormatterRegistry registry){
+        registry.addFormatter(
+                new CategoryFormatter(applicationContext.getBean(CategoryService.class)));
+    }
+
+
 
 
     //Config FileUpload
@@ -129,13 +151,22 @@ public class AppConfiguration extends WebMvcConfigurerAdapter implements Applica
     }
 
     @Bean
-    public LocalSessionFactoryBean sessionFactory() {
-        LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
-        sessionFactory.setDataSource(dataSource());
-        sessionFactory.setPackagesToScan("model");
-        sessionFactory.setHibernateProperties(additionalProperties());
+    public PlatformTransactionManager transactionManager(EntityManagerFactory emf) {
+        JpaTransactionManager transactionManager = new JpaTransactionManager();
+        transactionManager.setEntityManagerFactory(emf);
+        return transactionManager;
+    }
 
-        return sessionFactory;
+    @Bean
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+        LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
+        em.setDataSource(dataSource());
+        em.setPackagesToScan("model");
+
+        JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+        em.setJpaVendorAdapter(vendorAdapter);
+        em.setJpaProperties(additionalProperties());
+        return em;
     }
 
     @Bean

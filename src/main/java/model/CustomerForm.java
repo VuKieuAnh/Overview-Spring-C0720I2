@@ -8,6 +8,15 @@ public class CustomerForm {
     private String email;
     private String address;
     private MultipartFile img;
+    private Category category;
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
 
     public MultipartFile getImg() {
         return img;
