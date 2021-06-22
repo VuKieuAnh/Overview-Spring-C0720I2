@@ -1,13 +1,18 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:form="http://www.w3.org/1999/html"
+      xmlns:css="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
+<style>
+    .demo{
+
+    }
+</style>
 <body>
 //menu
 <div th:replace="/layout::menu"></div>
-
 <div id="form" >
     <form th:object="${customer}" enctype="multipart/form-data"
           method="POST" novalidate="novalidate">
@@ -15,10 +20,12 @@
         <div>
             <label>Name</label>
             <input type="text" th:field="*{name}"/>
+            <label th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></label>
         </div>
         <div>
             <label>Email</label>
             <input type="email" th:field="*{email}"/>
+            <label th:errors="*{email}"></label>
         </div>
         <div>
             <label>Address</label>

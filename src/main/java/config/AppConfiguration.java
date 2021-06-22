@@ -1,15 +1,13 @@
 package config;
 
+import aspect.MyLogger;
 import formater.CategoryFormatter;
 import model.Category;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.format.FormatterRegistrar;
@@ -50,6 +48,7 @@ import java.util.Properties;
 @PropertySource("classpath:file_upload.properties")
 @EnableTransactionManagement
 @EnableJpaRepositories("repo")
+@EnableAspectJAutoProxy
 public class AppConfiguration extends WebMvcConfigurerAdapter implements ApplicationContextAware {
     private ApplicationContext applicationContext;
 
@@ -108,6 +107,11 @@ public class AppConfiguration extends WebMvcConfigurerAdapter implements Applica
                 new CategoryFormatter(applicationContext.getBean(CategoryService.class)));
     }
 
+
+    @Bean
+    public MyLogger myLogger(){
+        return new MyLogger();
+    }
 
 
 

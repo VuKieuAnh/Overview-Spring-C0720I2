@@ -1,5 +1,6 @@
 package service;
 
+import exception.NotfoundException;
 import model.Customer;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,9 +29,10 @@ public class CustomerServiceORM implements ICustomerService{
     }
 
     @Override
-    public Customer findById(Long id) {
-        return customerRepo.findOne(id)
-                ;
+    public Customer findById(Long id) throws NotfoundException {
+        Customer customer = customerRepo.findOne(id);
+        if (customer != null) return customer;
+        throw new NotfoundException("khong tim thay");
     }
 
     @Override

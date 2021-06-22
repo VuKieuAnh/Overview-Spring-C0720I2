@@ -1,5 +1,6 @@
 package service;
 
+import exception.NotfoundException;
 import model.Customer;
 
 import java.util.List;
@@ -9,7 +10,7 @@ public interface ICustomerService {
 
     void save(Customer customer);
 
-    Customer findById(Long id);
+    Customer findById(Long id) throws NotfoundException;
 
     void update(int id, Customer customer);
 

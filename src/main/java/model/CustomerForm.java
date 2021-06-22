@@ -2,9 +2,15 @@ package model;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Size;
+
 public class CustomerForm {
     private int id;
+    @Size(min = 1, max = 200, message = "ten phai tu 1 - 200 ky tu")
     private String name;
+
+    @Email
     private String email;
     private String address;
     private MultipartFile img;
