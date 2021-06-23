@@ -30,11 +30,12 @@ public class CategoryService implements ICategoryService {
 
     @Override
     public void update(int id, Category customer) {
-
+        customer.setId(new Long(id));
+        categoryRepository.save(customer);
     }
 
     @Override
     public void remove(Long id) {
-
+        categoryRepository.delete(id);
     }
 }

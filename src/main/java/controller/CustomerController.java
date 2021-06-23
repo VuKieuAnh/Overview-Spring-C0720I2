@@ -80,7 +80,6 @@ public class CustomerController {
     }
 
 
-
     //xu ly khi nhan nut tao moi
 //    @PostMapping("/create")
 //    public String createNewCustomer(@Validated CustomerForm customerForm, BindingResult bindingResult, Model modelMap){

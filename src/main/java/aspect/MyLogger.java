@@ -6,7 +6,7 @@ import org.aspectj.lang.annotation.Aspect;
 
 @Aspect
 public class MyLogger {
-    @AfterReturning(pointcut = "within(controller.*)", returning = "result")
+    @AfterReturning(pointcut = "within(controller.CustomerController.*)", returning = "result")
     public void log(JoinPoint joinPoint, Object result){
         System.out.println("Start log");
         String className = joinPoint.getTarget().getClass().getSimpleName();
