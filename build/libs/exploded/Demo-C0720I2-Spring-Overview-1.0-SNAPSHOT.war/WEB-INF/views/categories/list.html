@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+</head>
+<body>
+<h1>Danh sách danh mục</h1>
+
+<form>
+  <input name="name" id="name">
+  <button type="submit" onclick="addCategories()">AddNew</button>
+</form>
+
+<table>
+  <tr>
+    <td>#</td>
+    <td>name</td>
+    <td>action</td>
+  </tr>
+  <tbody id="content">
+
+  <th:block th:each="c:${list}">
+    <tr>
+      <td th:text="${c.id}"></td>
+      <td th:text="${c.name}"></td>
+      <td>
+        <a class="deleteCategories" th:href="${c.getId()}">Xoa</a>
+      </td>
+    </tr>
+  </th:block>
+  </tbody>
+</table>
+<script>
+  function addCategories(){
+    //lay du lieu
+    let name = $('#name').val();
+    // let name = document.getElementById("name").value;
+
+    //tao doi tuong de gui len sever
+    let newCategories = {
+      name:name,
+      description: "Mo ta"
+    }
+    //gui request
+    $.ajax({
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      type:"POST",
+      //chuyen object thanh json
+      //dinh nghia du lieu
+      data: JSON.stringify(newCategories),
+      //tên API
+      url:"/categories/create",
+      //xử lý khi thành công
+      success: successHandler
+      //goi lai danh sach
+      //dien lai thong tin vao bang
+
+    });
+    //chặn sự kiện mặc định của thẻ
+    event.preventDefault();
+  }
+
+  function successHandler(){
+    $.ajax({
+      type:"GET",
+      url: "/categories",
+      success: function (taothich){
+        let c = "";
+        for (let i = 0; i < taothich.length; i++) {
+          c+= `<tr><td>${taothich[i].name}</td>
+                <td><a class="deleteCategories" href="${taothich[i].id}">Xoa</a></td>
+                </tr>`
+        }
+        document.getElementById("content").innerHTML = c;
+      }
+    })
+  }
+
+  $(document).ready(function () {
+    //sư kiện nào thực hiện Ajax
+    $('.deleteCategories').click(function(event){
+      //lay id ra
+      // let a = document.getElementById("name").value;
+      // let b = $("#name").val;
+      let a = $(this);
+      let id= a.attr("href");
+      //gui request xoa xoa o webservice
+      $.ajax({
+        //method
+        type: "DELETE",
+        //duong dan cua API
+        url: "/categories/"+ id,
+        //tai lai du lieu thao tac o tren DOM
+        success: function (){
+          a.parent().parent().remove();
+        }
+      });
+
+      //tai lai du lieu
+
+      //chặn sự kiện mặc định của thẻ
+      event.preventDefault();
+    });
+
+
+  })
+</script>
+</body>
+</html>
